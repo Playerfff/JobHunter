@@ -1,0 +1,4 @@
+add_executable(BlackboardFighting BlackboardFighting.cpp)
+add_executable(AddLockSolution AddLockSolution.cpp)
+add_executable(SmartLock SmartLock.cpp)
+add_executable(SafeAndSmartLock SafeAndSmartLock.cpp)

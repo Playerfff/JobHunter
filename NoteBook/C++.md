@@ -1,8 +1,11 @@
 # C
 
-1. malloc & calloc
-   1. malloc分配内存, 不初始化;
-   2. calloc分配内存, 且全部初始化为0.
+1. malloc & calloc & realloc & free
+   1. malloc(size): 分配一块大小为size的内存, 不初始化, 初始值为混沌;
+   2. calloc(size, n): 分配n块大小为size的连续内存内存, 且全部初始化为0.
+   3. realloc(*ptr, size): 将ptr内存大小增大到size, 新增加的内存块没有初始化;
+   4. free(void* ptr): 释放ptr所指向的一块内存空间;
+   5. new/delete可以调用类的constructor和destructor, malloc和free不会调用这些。
    
 2. c比较float或者double类型的浮点数会存在精度问题, 因此不能直接使用`==`或者`!=`比较,应该使用`精度`;
 
@@ -48,6 +51,45 @@
    #define ARR_SIZE(a) (sizeof((a)) / sizeof((a[0])))
    ```
 
+5. 指针+1操作: 一个类型为t的指针的移动, 以`sizeof(t)`为移动单位;
+
+6. 指针比较:
+```c++
+    1    #include <iostream>
+    2    using namespace std;
+    3
+    4    int main(void)
+    5    {
+    6         char str1[]        = "abc";
+    7         char str2[]        = "abc";
+    8         const char str3[]  = "abc";
+    9         const char str4[]  = "abc";
+    10       const char* str5   = "abc";
+    11       const char* str6   = "abc";
+    12       char* str7  = "abc";
+    13       char* str8  = "abc";
+    14
+    15        cout << ( str1==str2 ) << endl;
+    16        cout << ( str3==str4 ) << endl;
+    17        cout << ( str5==str6 ) << endl;
+    18        cout << ( str6==str7 ) << endl;
+    19        cout << ( str7==str8 ) << endl;
+    20
+    21        return 0;
+    22   }
+```
+数组str1、str2、str3和str4都是在stack中分配的, 内存中的内容都是"abc"加一个'\0',但是他们位置是不同的,因此代码第15、16行输出都是0；
+
+指针str5、str6、str7和str8也是在stack中分配的,他们都指向"abc"字符串,注意"abc"存放在数据区, 所以str5、str6、str7和str8其实指向同一块数据区的内存。因此第17/18/19行输出为1.
+
+7. 野指针:
+    1. 野指针不是NULL指针, 而是指向垃圾内存的指针;
+    2. 其成因主要为: 指针变量没有初始化,指向一片混沌; 或指针被free后没有置空。
+    ```cpp
+    int* i;
+    int p = 20;
+    *i = p;       // error: i在被定义时没有被初始化, 是"野指针", 因此对于他所指向的内存操作是十分危险的, 可改为: int *i = (int*)malloc(sizeof(int)); *i = p;
+    ```
    
 
 # C++
@@ -102,6 +144,7 @@
    int x = 1;
    int *const p = &x; // 指针为const
    ```
+   3. 只有const在*右边才是top-level const; 其他都是low-level const.
 
 7. enum class;
 
@@ -764,3 +807,15 @@ int main() {
           return 0;
       }
       ```
+
+6. std::string:
+    1. 数字转std::string:
+    ```cpp
+    int i = 0;
+    std::string str = std::to_string(i);
+    ```
+
+    2. std::string转数字:
+    ```cpp
+    int i = std::stoi(str);
+    ```

@@ -10,6 +10,11 @@
 
 
 // alarm函数 -> signal 14
+// kill函数 int kill(pid_t pid, int sig); 将sig指定的信号给pid号进程
+  // pid > 0 将信号传给进程号为pid的进程
+  // pid = 0 将信号传给和当前进程相同进程组的所有进程，常用于父进程给子进程发送信号，注意：发送信号者进程也会收到自己发送出的信号
+  // pid = -1 将信号广播给系统内所有进程，例如系统关机时，会向所有的登录窗口广播关机信息
+
 #include <signal.h>
 #include <iostream>
 

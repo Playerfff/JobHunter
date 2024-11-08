@@ -3,4 +3,4 @@ project(LruCache)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(LruCache LruCache.cpp)
+add_executable(LruCache main.cpp)

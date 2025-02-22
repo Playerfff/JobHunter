@@ -7,7 +7,7 @@ class Graph
 {
 public:
     Graph(std::size_t vertices_num): _V(vertices_num){
-        _adjList.reserve(_V);
+        _adjList.resize(_V);
     }
 
     // add edge, u -> v
